@@ -11,10 +11,12 @@ class MinHeap():
             self.left = None
             self.right = None
             self.value = None
+            self.is_left = None
 
     def __init__(self):
         self.root = None
         self.last = None
+        self.next_open = None
 
     def pop(self):
         """
@@ -37,7 +39,7 @@ class MinHeap():
         """
         if self.root == None: # empty heap
             return None
-        
+
         else:
             return self.root.value
 
@@ -46,10 +48,33 @@ class MinHeap():
         Inserts the provided value onto the heap.
         Raises a ValueError for types other than int, float, and str.
         """
-        return None
+        # type checking
+        if not (isinstance(data, int) 
+                or isinstance(data, float)
+                or isinstance(data, str)):
+            raise ValueError("This MinHeap only supports int, float, and str.")
+
+        if self.root == None: # trivial case, empty heap
+            # store data in root, set as last inserted
+            n = self.HeapNode()
+            n.value = data
+            self.root = n
+            self.last = n
+
+            # create empty node for next_open
+            next_node = self.HeapNode()
+            n.left = next_node
+            next_node.is_left = True
+            self.next_open = next_node
+            return
+
+        current = self.root
+        while current:
+            return None
 
     def clear(self):
         """ Removes all elements from the heap."""
         self.root = None
         self.last = None
+        self.next_open = None
         return None
