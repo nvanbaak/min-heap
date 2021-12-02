@@ -88,7 +88,7 @@ class MinHeap():
         Returns and removes the minimum value from the heap.
         If the heap is empty, returns None.
         """
-        if self.root == None: return None # empty heap case
+        if self.root is None: return None # empty heap case
 
         # first, grab value from root
         output = self.root.value
