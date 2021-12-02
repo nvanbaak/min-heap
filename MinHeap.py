@@ -168,7 +168,7 @@ class MinHeap():
             raise TypeError("This MinHeap only supports int, float, and str.")
 
         # easy case: empty heap
-        if self.root == None:
+        if self.root is None:
             n = self.HeapNode()
             n.value = data
             self.root = n
