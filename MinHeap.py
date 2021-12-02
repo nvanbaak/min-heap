@@ -13,6 +13,19 @@ class MinHeap():
             self.value = None
             self.is_left = None
 
+        def is_smaller_than_kids(self):
+            """
+            Returns False if the node has at least one child node with a smaller value.
+            Otherwise, returns True.
+            """
+            if self.left is not None:
+                if not self.value < self.left.value:
+                    return False
+            if self.right is not None:
+                if not self.value < self.right.value:
+                    return False
+            return True
+
         def append_right(self, node):
             """
             Appends a given node to the right with appropriate linking.
@@ -53,25 +66,61 @@ class MinHeap():
         Returns and removes the minimum value from the heap.
         If the heap is empty, returns None.
         """
-        if self.root == None: # ie heap is empty
-            return None
-        else:
-            output = self.root.value
+        if self.root == None: return None # empty heap case
 
-            # TODO: remove root value, replace with last value, and bubble down
+        # first grab value from root
+        output = self.root.value
 
-            return output
+        # trivial case: heap has size of 1
+        if self.root.left == None and self.root.right == None:
+            self.root == None
+            self.last == None
+            return
+
+        # begin by replacing root value with last insertion
+        self.root.value = self.last.value
+
+        # next, figure out where the new last is going to be once we delete the old one
+        if self.last.is_left: 
+            node_pointer = self.last.parent
+            node_pointer.left = None
+
+            while node_pointer.parent.is_left: # go up until we find a right child
+                if node_pointer.parent is not None:
+                    node_pointer = node_pointer.parent
+                else: # we hit root, nowhere else to climb
+                    break
+
+            # if it's not root, hop over to the left sibling
+            if node_pointer.parent is not None:
+                node_pointer = node_pointer.parent.left
+
+            # Traverse down the right until we hit an open slot
+            while node_pointer.right is not None:
+                node_pointer = node_pointer.right
+
+            # we're done, it's our new last
+            self.last = node_pointer
+
+        else: # if last is a right child, new last will be its right sibling
+            node_pointer = self.last.parent
+            node_pointer.right = None
+            self.last = node_pointer.left
+
+        # bubble down the root value
+        # node_pointer = self.root
+        # while node_pointer.is_smaller_than_kids():
+            
+
+        return output
 
     def peek(self):
         """
         Returns but does not remove the minimum value of the heap.
         If the heap is empty, returns None.
         """
-        if self.root == None: # empty heap
-            return None
-
-        else:
-            return self.root.value
+        if self.root == None: return None # empty heap
+        else: return self.root.value
 
     def insert(self, data):
         """
