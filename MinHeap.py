@@ -1,3 +1,5 @@
+# Nik Van Baak / 501 / 1 Dec 2021
+
 class MinHeap():
     """
     A node-based implementation of a MinHeap.
