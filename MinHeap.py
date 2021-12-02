@@ -210,22 +210,6 @@ class MinHeap():
             self.last = n
 
         # now that the new node is in self.last, bubble up its value
-        self.bubble_up_last()
-
-        return None
-
-    def clear(self):
-        """ Removes all elements from the heap."""
-        self.root = None
-        self.last = None
-        return None
-
-    def bubble_up_last(self):
-        """
-        Called after insertion operation.
-        Bubbles up the value in self.last until it's larger than its parent node.
-        """
-
         node_pointer = self.last
 
         # repeat until we hit root
@@ -235,8 +219,12 @@ class MinHeap():
             if node_pointer < node_pointer.parent:
                 node_pointer.value, node_pointer.parent.value = node_pointer.parent.value, node_pointer.value
                 node_pointer = node_pointer.parent
+            else: break # if the parent is smaller, we're done
 
-            else: # if the parent is smaller, we're done
-                break
+        return None
 
+    def clear(self):
+        """ Removes all elements from the heap."""
+        self.root = None
+        self.last = None
         return None
