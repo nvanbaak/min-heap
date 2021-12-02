@@ -44,6 +44,26 @@ class MinHeap():
             node.is_left = True
             return
 
+        def swap_values_with_left_child(self):
+            """
+            Exchanges the value of this node with its left child.
+            Raises TypeError if no left child.
+            """
+            if self.left is None:
+                raise TypeError()
+            self.value, self.left.value = self.left.value, self.value
+            return
+
+        def swap_values_with_right_child(self):
+            """
+            Exchanges the value of this node with its right child.
+            Raises TypeError if no right child.
+            """
+            if self.right is None:
+                raise TypeError()
+            self.value, self.right.value = self.right.value, self.value
+            return
+
         def __eq__(self, other_node):
             """
             Equality operator
@@ -68,14 +88,13 @@ class MinHeap():
         """
         if self.root == None: return None # empty heap case
 
-        # first grab value from root
+        # first, grab value from root
         output = self.root.value
 
         # trivial case: heap has size of 1
         if self.root.left == None and self.root.right == None:
-            self.root == None
-            self.last == None
-            return
+            self.clear()
+            return output
 
         # begin by replacing root value with last insertion
         self.root.value = self.last.value
@@ -108,10 +127,23 @@ class MinHeap():
             self.last = node_pointer.left
 
         # bubble down the root value
-        # node_pointer = self.root
-        # while node_pointer.is_smaller_than_kids():
-            
+        node_pointer = self.root
+        while node_pointer.is_smaller_than_kids():
 
+            # check for edge cases, return if encountered
+            if node_pointer.left is None: return output # case: no children
+            elif node_pointer.right is None: # case: one child
+                if node_pointer.left.value < node_pointer.value:
+                    node_pointer.swap_values_with_left_child()
+                # one child means we've hit the bottom row, so return
+                return output
+
+            # move to smaller node
+            if node_pointer.left <= node_pointer.right:
+                node_pointer = node_pointer.left
+            else: node_pointer = node_pointer.right
+
+        # if we reached here, both children are larger, so we're done
         return output
 
     def peek(self):
