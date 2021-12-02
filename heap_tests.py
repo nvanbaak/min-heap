@@ -118,11 +118,20 @@ class MyHeapTests(unittest.TestCase):
         mh.insert(5)
         mh.insert(1)
 
-        self.assertEquals(mh.pop(), 1)
-        self.assertEquals(mh.pop(), 4)
-        self.assertEquals(mh.pop(), 5)
+        # Tree should look like this:
+        #     1
+        #   5   4
+        #  8 6 7
 
-        # after pops, we should have this:
+        self.assertEquals(mh.pop(), 1)
+        #     4
+        #   5   7
+        #  8 6
+        self.assertEquals(mh.pop(), 4)
+        #     5
+        #   6   7
+        #  8
+        self.assertEquals(mh.pop(), 5)
         #    6
         #  8   7
 

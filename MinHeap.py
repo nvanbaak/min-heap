@@ -15,18 +15,21 @@ class MinHeap():
             self.value = None
             self.is_left = None
 
-        def is_smaller_than_kids(self):
+        def is_bigger_than_left(self):
             """
-            Returns False if the node has at least one child node with a smaller value.
-            Otherwise, returns True.
+            returns True if the left child is smaller; False otherwise.
+            Used during bubble sort.
             """
-            if self.left is not None:
-                if not self.value < self.left.value:
-                    return False
-            if self.right is not None:
-                if not self.value < self.right.value:
-                    return False
-            return True
+            if self.left is None: return False
+            return int(self.left.value) < int(self.value)
+
+        def is_bigger_than_right(self):
+            """
+            returns True if the right child is smaller; False otherwise.
+            Used during bubble sort.
+            """
+            if self.right is None: return False
+            return int(self.right.value) < int(self.value)
 
         def append_right(self, node):
             """
@@ -66,6 +69,12 @@ class MinHeap():
             self.value, self.right.value = self.right.value, self.value
             return
 
+        def __str__(self):
+            """
+            returns the node's value
+            """
+            return str(self.value)
+
         def __eq__(self, other_node):
             """
             Equality operator
@@ -94,7 +103,7 @@ class MinHeap():
         output = self.root.value
 
         # trivial case: heap has size of 1
-        if self.root.left == None and self.root.right == None:
+        if self.root.left is None and self.root.right is None:
             self.clear()
             return output
 
@@ -130,8 +139,12 @@ class MinHeap():
 
         # bubble down the root value
         node_pointer = self.root
-        while node_pointer.is_smaller_than_kids():
 
+        bubble_flag = False
+        if node_pointer.is_bigger_than_left() or node_pointer.is_bigger_than_right():
+            bubble_flag = True            
+
+        while bubble_flag:
             # check for edge cases, return if encountered
             if node_pointer.left is None: return output # case: no children
             elif node_pointer.right is None: # case: one child
@@ -140,10 +153,17 @@ class MinHeap():
                 # one child means we've hit the bottom row, so return
                 return output
 
-            # move to smaller node
-            if node_pointer.left <= node_pointer.right:
-                node_pointer = node_pointer.left
-            else: node_pointer = node_pointer.right
+            # move to smaller node if bigger than one of the children
+            if node_pointer.is_bigger_than_left() or node_pointer.is_bigger_than_right():
+                # move to smaller node
+                if node_pointer.right < node_pointer.left:
+                    node_pointer.swap_values_with_right_child()
+                    node_pointer = node_pointer.right
+                else:
+                    node_pointer.swap_values_with_left_child()
+                    node_pointer = node_pointer.left
+            else: # if smaller than both
+                bubble_flag = False
 
         # if we reached here, both children are larger, so we're done
         return output
