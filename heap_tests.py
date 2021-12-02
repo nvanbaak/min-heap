@@ -74,13 +74,13 @@ class MyHeapTests(unittest.TestCase):
 
         mh.clear()
 
-        self.assertEquals(mh.root, None)
+        self.assertEqual(mh.root, None)
 
     def test_pop_empty_heap(self):
         mh = MinHeap()
 
-        self.assertEquals(mh.pop(), None)
-        self.assertEquals(mh.root, None)
+        self.assertEqual(mh.pop(), None)
+        self.assertEqual(mh.root, None)
 
     def test_pop_once(self):
         mh = MinHeap()
@@ -97,16 +97,16 @@ class MyHeapTests(unittest.TestCase):
         #   5   4
         #  8 6 7
 
-        self.assertEquals(mh.pop(), 1)
+        self.assertEqual(mh.pop(), 1)
 
         # after pop, we should have this:
         #    4
         #  5   7
         # 8 6
 
-        self.assertEquals(mh.root.right.value, 7)
-        self.assertEquals(mh.root.left.value, 5)
-        self.assertEquals(mh.last.value, 6)
+        self.assertEqual(mh.root.right.value, 7)
+        self.assertEqual(mh.root.left.value, 5)
+        self.assertEqual(mh.last.value, 6)
 
     def test_pop_multiple(self):
         mh = MinHeap()
@@ -123,21 +123,23 @@ class MyHeapTests(unittest.TestCase):
         #   5   4
         #  8 6 7
 
-        self.assertEquals(mh.pop(), 1)
+        self.assertEqual(mh.pop(), 1)
         #     4
         #   5   7
         #  8 6
-        self.assertEquals(mh.pop(), 4)
+        self.assertEqual(mh.pop(), 4)
         #     5
         #   6   7
         #  8
-        self.assertEquals(mh.pop(), 5)
+        self.assertEqual(mh.pop(), 5)
         #    6
         #  8   7
 
-        self.assertEquals(mh.peek(), 6)
-        self.assertEquals(mh.last.value, 7)
-        self.assertEquals(mh.root.left.value, 8)
+        self.assertEqual(mh.peek(), 6)
+        self.assertEqual(mh.last.value, 7)
+        self.assertEqual(mh.root.right.value, 7)
+        self.assertEqual(mh.root.left.value, 8)
+
 
 
 if __name__ == "__main__":

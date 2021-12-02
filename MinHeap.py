@@ -97,9 +97,10 @@ class MinHeap():
         Returns and removes the minimum value from the heap.
         If the heap is empty, returns None.
         """
-        if self.root is None: return None # empty heap case
+        # empty heap returns None
+        if self.root is None: return None
 
-        # first, grab value from root
+        # grab value from root before doing anything else
         output = self.root.value
 
         # trivial case: heap has size of 1
@@ -115,15 +116,13 @@ class MinHeap():
             node_pointer = self.last.parent
             node_pointer.left = None
 
-            while node_pointer.parent.is_left: # go up until we find a right child
-                if node_pointer.parent is not None:
-                    node_pointer = node_pointer.parent
-                else: # we hit root, nowhere else to climb
+            # keep moving up until we hit root or a right child
+            while node_pointer.parent is not None:
+                if node_pointer.is_left == False:
+                    # if we hit a right child before root, point to its sibling
+                    node_pointer = node_pointer.parent.left
                     break
-
-            # if it's not root, hop over to the left sibling
-            if node_pointer.parent is not None:
-                node_pointer = node_pointer.parent.left
+                node_pointer = node_pointer.parent
 
             # Traverse down the right until we hit an open slot
             while node_pointer.right is not None:
@@ -187,7 +186,7 @@ class MinHeap():
                 or isinstance(data, str)):
             raise TypeError("This MinHeap only supports int, float, and str.")
 
-        # easy case: empty heap
+        # edge case: empty heap
         if self.root is None:
             n = self.HeapNode()
             n.value = data
@@ -203,8 +202,13 @@ class MinHeap():
         n = self.HeapNode()
         n.value = data
 
+        # edge case: heap size is 1
+        if self.last.is_left is None: # ie root node is last insert
+            self.last.append_left(n)
+            self.last = n
+
         # if the recent-most child is on the left, the right child is open
-        if self.last.is_left:
+        elif self.last.is_left:
             self.last.parent.append_right(n)
             self.last = n
 
