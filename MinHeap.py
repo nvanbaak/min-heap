@@ -153,7 +153,7 @@ class MinHeap():
         Returns but does not remove the minimum value of the heap.
         If the heap is empty, returns None.
         """
-        if self.root == None: return None # empty heap
+        if self.root is None: return None # empty heap
         else: return self.root.value
 
     def insert(self, data):
